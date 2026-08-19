@@ -1,0 +1,83 @@
+/* 头部 */
+.adopt-header {
+  text-align: center;
+  padding: 40rpx 24rpx 20rpx;
+}
+
+.adopt-icon {
+  font-size: 72rpx;
+  margin-bottom: 12rpx;
+}
+
+.adopt-title {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 8rpx;
+}
+
+.adopt-subtitle {
+  font-size: 26rpx;
+  color: #666;
+}
+
+/* 表单 */
+.form-group {
+  margin-bottom: 28rpx;
+}
+
+.form-group:last-child {
+  margin-bottom: 0;
+}
+
+.form-label {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 12rpx;
+}
+
+.form-input {
+  width: 100%;
+  height: 80rpx;
+  background: #f5f7fa;
+  border-radius: 12rpx;
+  padding: 0 24rpx;
+  font-size: 28rpx;
+  color: #333;
+  box-sizing: border-box;
+}
+
+/* 须知 */
+.tips-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 16rpx;
+}
+
+.tips-list {
+  padding-left: 0;
+}
+
+.tips-item {
+  font-size: 24rpx;
+  color: #999;
+  line-height: 1.8;
+}
+
+/* 提交按钮 */
+.form-submit {
+  padding: 24rpx;
+  padding-bottom: calc(24rpx + env(safe-area-inset-bottom));
+}
+
+.adopt-submit-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32rpx;
+  height: 88rpx;
+  line-height: 88rpx;
+}

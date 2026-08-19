@@ -1,0 +1,119 @@
+<view class="page-container">
+  <!-- 统计总览 -->
+  <view class="stat-row">
+    <view class="stat-item">
+      <view class="stat-value">{{buildings.length}}</view>
+      <view class="stat-label">覆盖楼栋</view>
+    </view>
+    <view class="stat-item">
+      <view class="stat-value">{{cats.length}}</view>
+      <view class="stat-label">流浪猫数量</view>
+    </view>
+  </view>
+
+  <!-- 楼栋分布图 -->
+  <view class="card">
+    <view class="section-title">🏘️ 猫咪活动分布</view>
+    <view class="range-subtitle">点击楼栋查看该区域的猫咪</view>
+
+    <view wx:if="{{buildings.length === 0}}" class="empty-state" style="padding:40rpx 0;">
+      <view class="empty-text">暂无数据</view>
+    </view>
+
+    <view class="building-list">
+      <view
+        wx:for="{{buildings}}"
+        wx:key="name"
+        class="building-row {{item.pending > 0 ? 'has-pending' : ''}}"
+        data-building="{{item.name}}"
+        bindtap="onBuildingTap"
+      >
+        <!-- 左侧：图标 + 楼栋名 + 进度条 -->
+        <view class="building-left">
+          <view class="building-icon">🏢</view>
+          <view class="building-info">
+            <view class="building-name">{{item.name}}栋</view>
+            <view class="building-bar">
+              <view
+                class="building-bar-fill"
+                style="width: {{item.total > 0 ? item.adopted / item.total * 100 : 0}}%"
+              ></view>
+            </view>
+          </view>
+        </view>
+
+        <!-- 右侧：数量统计 -->
+        <view class="building-right">
+          <view class="building-num">
+            <text class="building-num-total">{{item.total}}</text>
+            <text class="building-num-unit">只</text>
+          </view>
+          <view class="building-num-detail">
+            <text class="building-stats-adopted">已认养 {{item.adopted}}</text>
+            <text wx:if="{{item.pending > 0}}" class="building-stats-pending">· 待 {{item.pending}}</text>
+          </view>
+        </view>
+
+        <!-- 右箭头 -->
+        <view class="building-arrow">›</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 所有猫咪列表 -->
+  <view class="card">
+    <view class="section-title">🐱 所有猫咪位置一览</view>
+    <view wx:for="{{buildings}}" wx:key="name" class="range-building-section">
+      <view class="range-building-header">
+        <text class="range-building-name">📍 {{item.name}}栋</text>
+        <text class="range-building-count">{{item.total}}只</text>
+      </view>
+      <scroll-view scroll-x class="range-cat-scroll">
+        <view class="range-cat-list">
+          <view
+            wx:for="{{cats}}"
+            wx:for-item="cat"
+            wx:key="id"
+            wx:if="{{(cat.building || '未知') === item.name}}"
+            class="range-cat-item"
+            data-id="{{cat.id}}"
+            bindtap="onCatTap"
+          >
+            <view class="range-cat-avatar">
+              <image
+                wx:if="{{cat.avatarFullUrl}}"
+                src="{{cat.avatarFullUrl}}"
+                mode="aspectFill"
+                class="range-cat-img"
+              />
+              <text wx:else class="range-cat-emoji">🐱</text>
+            </view>
+            <text class="range-cat-name">{{cat.name || '无名'}}</text>
+            <view wx:if="{{cat.isAdopted}}" class="bubble bubble-success" style="font-size:18rpx;padding:2rpx 10rpx;">已认养</view>
+            <view wx:else class="bubble bubble-warning" style="font-size:18rpx;padding:2rpx 10rpx;">待认养</view>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+</view>
+
+<!-- 弹窗：某楼栋的猫咪 -->
+<view class="modal-mask" wx:if="{{showCats}}" bindtap="onCloseCats">
+  <view class="modal-content" catchtap="">
+    <view class="modal-header">
+      <text class="modal-title">{{selectedBuilding}}栋 的猫咪</text>
+      <text class="modal-close" bindtap="onCloseCats">✕</text>
+    </view>
+    <scroll-view scroll-y class="modal-body">
+      <view class="cat-grid">
+        <view class="cat-grid-item" wx:for="{{buildingCats}}" wx:key="id">
+          <cat-card cat="{{item}}"></cat-card>
+        </view>
+      </view>
+      <view wx:if="{{buildingCats.length === 0}}" class="empty-state" style="padding:60rpx 0;">
+        <view class="empty-text">该楼栋暂无猫咪</view>
+      </view>
+    </scroll-view>
+  </view>
+</view>

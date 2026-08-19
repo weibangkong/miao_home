@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "gender-badge": "../../components/gender-badge/gender-badge"
+  },
+  "navigationBarTitleText": "猫咪详情"
+}

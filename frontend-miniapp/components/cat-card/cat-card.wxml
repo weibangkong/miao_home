@@ -1,0 +1,29 @@
+<view class="cat-card" bindtap="onTap">
+  <!-- 封面图 -->
+  <view class="cat-cover">
+    <image
+      wx:if="{{avatarUrl}}"
+      src="{{avatarUrl}}"
+      mode="aspectFill"
+      class="cat-image"
+    />
+    <view wx:else class="cat-placeholder">🐱</view>
+    <!-- 状态气泡 -->
+    <view class="cover-tags">
+      <view class="bubble bubble-success" wx:if="{{cat.isAdopted}}">
+        <view class="bubble-dot"></view>已认养
+      </view>
+      <view class="bubble bubble-info" wx:if="{{cat.isNeutered}}">已绝育</view>
+    </view>
+  </view>
+
+  <!-- 信息 -->
+  <view class="cat-body">
+    <view class="cat-name">{{cat.name || '无名猫'}}</view>
+    <view class="cat-meta">
+      <gender-badge gender="{{cat.gender}}" iconOnly="{{true}}" wx:if="{{cat.gender}}"></gender-badge>
+      <text class="cat-building" wx:if="{{cat.building}}">📍 {{cat.building}}栋</text>
+    </view>
+    <view class="cat-color" wx:if="{{cat.color}}">毛色：{{cat.color}}</view>
+  </view>
+</view>

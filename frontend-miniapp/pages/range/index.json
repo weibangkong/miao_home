@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "cat-card": "../../components/cat-card/cat-card"
+  },
+  "navigationBarTitleText": "活动范围"
+}

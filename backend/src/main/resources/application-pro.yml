@@ -1,0 +1,29 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://www.hellmiao.com:5432/miao_home
+    username: miao_home
+    password: miao_home_2024_DML
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+storage:
+  type: aliyun
+
+# 生产环境关闭 Swagger 接口文档
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false
+
+logging:
+  level:
+    root: warn
+    com.miaohome: info

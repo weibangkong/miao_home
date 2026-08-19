@@ -1,0 +1,190 @@
+﻿<view class="page-container" wx:if="{{cat}}">
+  <!-- 头像区 -->
+  <view class="detail-avatar-wrap">
+    <image wx:if="{{cat.avatarFullUrl}}" src="{{cat.avatarFullUrl}}" mode="aspectFill" class="detail-avatar" />
+    <view wx:else class="detail-avatar-placeholder">🐱</view>
+    <view class="avatar-tags">
+      <view wx:if="{{cat.isAdopted}}" class="bubble bubble-success"><view class="bubble-dot"></view>已认养</view>
+      <view wx:else class="bubble bubble-warning"><view class="bubble-dot"></view>待认养</view>
+      <view wx:if="{{cat.isNeutered}}" class="bubble bubble-info"><view class="bubble-dot"></view>已绝育</view>
+      <view wx:if="{{sickCount > 0}}" class="bubble bubble-danger"><view class="bubble-dot"></view>{{sickCount}}条异常</view>
+    </view>
+    <!-- 点赞按钮 -->
+    <view class="like-btn" bindtap="onCatLike">
+      <text style="font-size:36rpx;">{{catLiked ? '❤️' : '🤍'}}</text>
+      <text style="margin-left:8rpx;font-size:28rpx;color:#666;">{{catLikeCount || '点赞'}}</text>
+    </view>
+  </view>
+
+  <!-- 基本信息 -->
+  <view class="card">
+    <view class="section-title">📋 基本信息</view>
+    <view class="info-grid">
+      <view class="info-item"><text class="info-label">名字</text><text class="info-value">{{cat.name || '无名猫'}}</text></view>
+      <view class="info-item"><text class="info-label">性别</text><gender-badge gender="{{cat.gender}}"></gender-badge></view>
+      <view class="info-item"><text class="info-label">毛色</text><text class="info-value">{{cat.color || '未知'}}</text></view>
+      <view class="info-item"><text class="info-label">出生年份</text><text class="info-value">{{cat.birthYear || '未知'}}</text></view>
+      <view class="info-item"><text class="info-label">常驻楼栋</text><text class="info-value">{{cat.building ? cat.building + '栋' : '未知'}}</text></view>
+      <view class="info-item"><text class="info-label">健康概况</text>
+        <view class="flex-row gap-8">
+          <text wx:if="{{healthRecords.length === 0}}" style="color:#999">无记录</text>
+          <text wx:else style="color:#52c41a;font-weight:700;">{{healthyCount}} 健康</text>
+          <text wx:if="{{sickCount > 0}}" style="color:#ff4d4f;font-weight:700;">{{sickCount}} 异常</text>
+        </view>
+      </view>
+    </view>
+    <view class="info-desc" wx:if="{{cat.description}}">
+      <text class="info-label">描述</text><text class="info-value mt-8">{{cat.description}}</text>
+    </view>
+  </view>
+
+  <!-- 常出没地点 -->
+  <view class="card" wx:if="{{locationGroups.length > 0}}">
+    <view class="section-title">📍 常出没地点</view>
+    <view class="location-item" wx:for="{{locationGroups}}" wx:key="tenantId">
+      <view class="location-tenant">🏘️ 小区 ID: {{item.tenantId}}</view>
+      <view class="location-buildings-text">{{item.buildings}}栋</view>
+    </view>
+  </view>
+
+  <!-- 健康记录 -->
+  <view class="card" wx:if="{{healthRecords.length > 0}}">
+    <view class="section-title">💉 健康记录</view>
+    <view class="health-item" wx:for="{{healthRecords}}" wx:key="id">
+      <view class="flex-between">
+        <view class="flex-row gap-8">
+          <view wx:if="{{item.isSick}}" class="bubble bubble-danger"><view class="bubble-dot"></view>异常</view>
+          <view wx:else class="bubble bubble-success"><view class="bubble-dot"></view>健康</view>
+          <text class="health-name">{{item.diseaseName || (item.isSick ? '身体异常' : '健康检查')}}</text>
+        </view>
+        <text class="health-date">{{item.recordDate || '-'}}</text>
+      </view>
+      <view class="mt-12" wx:if="{{item.description}}" style="color:#666;font-size:24rpx;">{{item.description}}</view>
+      <view wx:if="{{item.treatment}}" style="color:#1677ff;font-size:24rpx;margin-top:8rpx;">💊 治疗：{{item.treatment}}</view>
+    </view>
+  </view>
+
+  <!-- 照片/视频 -->
+  <view class="card" wx:if="{{mediaList.length > 0}}">
+    <view class="section-title">📸 照片 / 视频</view>
+    <view class="media-grid">
+      <view class="media-item" wx:for="{{mediaList}}" wx:key="id" data-url="{{item.fullUrl}}" bindtap="onPreviewMedia">
+        <image wx:if="{{item.mediaType === 'PHOTO'}}" src="{{item.fullUrl}}" mode="aspectFill" class="media-img" />
+        <view wx:else class="media-video-wrap">
+          <image src="{{item.fullUrl}}" mode="aspectFill" class="media-img" wx:if="{{item.fullUrl}}"></image>
+          <view class="media-play-icon">▶</view>
+        </view>
+        <view class="media-tag">{{item.ageStage || '未标注'}}</view>
+        <view wx:if="{{item.isAvatar}}" class="media-avatar-tag">头像</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 认养记录 -->
+  <view class="card" wx:if="{{adopters.length > 0}}">
+    <view class="section-title">🙋 认养记录</view>
+    <view class="adopter-item" wx:for="{{adopters}}" wx:key="id">
+      <view class="flex-between">
+        <text class="adopter-name">{{item.adopterName || '匿名认养者'}}</text>
+        <view wx:if="{{item.isActive}}" class="bubble bubble-success"><view class="bubble-dot"></view>认养中</view>
+        <view wx:else class="bubble bubble-neutral">已取消</view>
+      </view>
+      <view class="adopter-detail mt-12">
+        <text wx:if="{{item.householdNumber}}">🔢 {{item.householdNumber}}</text>
+        <text wx:if="{{item.building}}">🏠 {{item.building}}栋{{item.unitNumber || ''}}</text>
+        <text wx:if="{{item.adoptedAt}}">📮 {{item.adoptedAt}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 评论区 -->
+  <view class="card">
+    <view class="section-title">💬 评论</view>
+
+    <!-- 发表评论 / 回复 -->
+    <view class="comment-input-area">
+      <view wx:if="{{replyTarget}}" class="reply-banner">
+        <text>回复 <text style="font-weight:700;">{{replyTarget.nickname}}</text></text>
+        <text class="cancel-reply" bindtap="onCancelReply">取消</text>
+      </view>
+      <textarea
+        placeholder="{{replyTarget ? '回复 ' + replyTarget.nickname + '...' : '说点什么...'}}"
+        value="{{commentInput}}"
+        bindinput="onCommentInput"
+        maxlength="500"
+        class="comment-textarea"
+      />
+      <button class="btn-primary comment-submit-btn" bindtap="onSubmitComment" disabled="{{!commentInput.trim()}}">
+        {{replyTarget ? '回复' : '发表'}}
+      </button>
+    </view>
+
+    <!-- 排序 -->
+    <view class="comment-sort-bar">
+      <text class="comment-count">共 {{comments.length}} 条</text>
+      <view class="sort-tabs">
+        <text class="sort-tab {{commentSort === 'created_at_desc' ? 'active' : ''}}" data-sort="created_at_desc" bindtap="onCommentSort">最新</text>
+        <text class="sort-tab {{commentSort === 'created_at_asc' ? 'active' : ''}}" data-sort="created_at_asc" bindtap="onCommentSort">最早</text>
+        <text class="sort-tab {{commentSort === 'like_count_desc' ? 'active' : ''}}" data-sort="like_count_desc" bindtap="onCommentSort">最热</text>
+      </view>
+    </view>
+
+    <!-- 评论列表 -->
+    <view wx:if="{{commentLoading}}" class="loading-small">加载中...</view>
+    <view wx:elif="{{comments.length === 0}}" class="empty-small">暂无评论，来抢沙发吧~</view>
+    <block wx:else wx:for="{{comments}}" wx:key="id">
+      <view class="comment-item">
+        <view class="comment-avatar">{{item.nickname && item.nickname.charAt(0) || '?'}}</view>
+        <view class="comment-body">
+          <view class="comment-header">
+            <text class="comment-nickname">{{item.nickname || '未知用户'}}</text>
+            <text class="comment-time">{{item.createdAt}}</text>
+          </view>
+          <view class="comment-content">{{item.content}}</view>
+          <view class="comment-actions">
+            <view class="action-btn" data-id="{{item.id}}" bindtap="onCommentLike">
+              <text>{{item.likedByCurrentUser ? '❤️' : '🤍'}} {{item.likeCount || ''}}</text>
+            </view>
+            <view class="action-btn" data-id="{{item.id}}" data-nickname="{{item.nickname}}" bindtap="onReply">
+              <text>💬 回复</text>
+            </view>
+            <view wx:if="{{currentUserId === item.userId}}" class="action-btn danger" data-id="{{item.id}}" bindtap="onDeleteComment">
+              <text>🗑 删除</text>
+            </view>
+          </view>
+          <!-- 子回复 -->
+          <view wx:if="{{item.replies && item.replies.length > 0}}" class="replies-wrap">
+            <block wx:for="{{item.replies}}" wx:key="id" wx:for-item="reply">
+              <view class="reply-item">
+                <view class="comment-avatar sm">{{reply.nickname && reply.nickname.charAt(0) || '?'}}</view>
+                <view class="comment-body">
+                  <view class="comment-header">
+                    <text class="comment-nickname">{{reply.nickname || '未知用户'}}</text>
+                    <text class="comment-time">{{reply.createdAt}}</text>
+                  </view>
+                  <view class="comment-content">{{reply.content}}</view>
+                  <view class="comment-actions">
+                    <view class="action-btn" data-id="{{reply.id}}" bindtap="onCommentLike">
+                      <text>{{reply.likedByCurrentUser ? '❤️' : '🤍'}} {{reply.likeCount || ''}}</text>
+                    </view>
+                    <view wx:if="{{currentUserId === reply.userId}}" class="action-btn danger" data-id="{{reply.id}}" bindtap="onDeleteComment">
+                      <text>🗑 删除</text>
+                    </view>
+                  </view>
+                </view>
+              </view>
+            </block>
+          </view>
+        </view>
+      </view>
+    </block>
+  </view>
+
+  <!-- 底部认养按钮 -->
+  <view class="bottom-bar" wx:if="{{!cat.isAdopted}}">
+    <button class="btn-primary adopt-btn" bindtap="onAdopt">💐 认养这只猫咪</button>
+  </view>
+</view>
+
+<view wx:if="{{loading}}" class="loading-center"><view>加载中...</view></view>
+<view wx:if="{{!loading && !cat}}" class="empty-state"><view class="empty-text">猫咪不存在</view></view>

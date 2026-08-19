@@ -1,0 +1,47 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /miaohome/api
+
+spring:
+  application:
+    name: miaohome
+  profiles:
+    active: dev
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 100MB
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Shanghai
+
+app:
+  upload-dir: ${user.dir}/uploads
+  default-tenant-id: 1
+
+# 文件存储配置（aliyun / local）
+storage:
+  type: ${STORAGE_TYPE:local}
+  aliyun:
+    endpoint: ${ALIYUN_OSS_ENDPOINT:}
+    region: ${ALIYUN_OSS_REGION:}
+    bucket: ${ALIYUN_OSS_BUCKET:}
+    access-key-id: ${ALIYUN_ACCESS_KEY_ID:}
+    access-key-secret: ${ALIYUN_ACCESS_KEY_SECRET:}
+    role-arn: ${ALIYUN_OSS_ROLE_ARN:}
+    role-session-name: ${ALIYUN_OSS_ROLE_SESSION_NAME:miaohome}
+    url-expiration-seconds: ${ALIYUN_OSS_URL_EXPIRATION:3600}
+    public-base-url: ${ALIYUN_OSS_PUBLIC_BASE_URL:}
+
+# 日志输出路径（默认 jar 包同目录下的 logs/）
+# 可通过启动参数或环境变量覆盖：--logging.file.path=/var/log/miaohome
+logging:
+  file:
+    path: ${LOGGING_FILE_PATH:./logs}
+
+# 微信小程序配置（通过环境变量注入，开发环境默认空）
+wechat:
+  miniapp:
+    appid: ${WECHAT_APPID:}
+    secret: ${WECHAT_SECRET:}

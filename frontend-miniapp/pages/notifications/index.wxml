@@ -1,0 +1,63 @@
+<view class="page-container">
+  <!-- 头部 -->
+  <view class="page-header">
+    <view class="flex-row gap-12">
+      <text class="page-title">🔔 通知中心</text>
+      <view wx:if="{{unreadCount > 0}}" class="unread-badge">{{unreadCount}}</view>
+    </view>
+    <text
+      wx:if="{{unreadCount > 0}}"
+      class="mark-all-read"
+      bindtap="onMarkAllRead"
+    >全部已读</text>
+  </view>
+
+  <!-- 未登录提示 -->
+  <view wx:if="{{!adopterId}}" class="empty-state">
+    <view class="empty-icon">🔔</view>
+    <view class="empty-text">请先认养一只猫咪</view>
+    <view class="empty-text" style="font-size:22rpx;margin-top:8rpx;">认养后将收到猫咪的动态通知</view>
+  </view>
+
+  <!-- 通知列表 -->
+  <view wx:elif="{{!loading && notifications.length === 0}}" class="empty-state">
+    <view class="empty-icon">📭</view>
+    <view class="empty-text">暂无通知</view>
+  </view>
+
+  <view wx:elif="{{!loading}}" class="notif-list">
+    <view
+      wx:for="{{notifications}}"
+      wx:key="id"
+      class="notif-item {{item.isRead ? '' : 'notif-unread'}}"
+    >
+      <view class="notif-left">
+        <view class="notif-icon {{item.isRead ? '' : 'notif-icon-unread'}}">
+          <text>{{item.isRead ? '📬' : '📩'}}</text>
+        </view>
+      </view>
+      <view class="notif-body">
+        <view class="flex-between">
+          <text class="notif-title">{{item.title}}</text>
+          <view wx:if="{{!item.isRead}}" class="bubble bubble-danger" style="font-size:18rpx;padding:2rpx 10rpx;">
+            <view class="bubble-dot"></view>未读
+          </view>
+        </view>
+        <text class="notif-content">{{item.content}}</text>
+        <view class="notif-footer">
+          <text class="notif-time">{{item.createdAtFormatted || item.createdAt}}</text>
+          <text
+            wx:if="{{!item.isRead}}"
+            class="notif-mark-read"
+            data-id="{{item.id}}"
+            bindtap="onMarkRead"
+          >标记已读</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{loading}}" class="loading-center">
+    <view>加载中...</view>
+  </view>
+</view>

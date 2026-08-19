@@ -1,0 +1,3 @@
+<view class="gender-badge {{classNames}}" wx:if="{{displayText}}">
+  <text>{{displayText}}</text>
+</view>

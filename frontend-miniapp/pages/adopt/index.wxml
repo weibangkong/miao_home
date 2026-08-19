@@ -1,0 +1,95 @@
+<view class="page-container">
+  <!-- 头部提示 -->
+  <view class="adopt-header">
+    <view class="adopt-icon">💝</view>
+    <view class="adopt-title">认养猫咪</view>
+    <view class="adopt-subtitle" wx:if="{{catName}}">您即将认养 <text style="color:#667eea;font-weight:700;">{{catName}}</text></view>
+  </view>
+
+  <!-- 表单 -->
+  <view class="card">
+    <view class="form-group">
+      <view class="form-label">认养户号 <text style="color:#ff4d4f;">*</text></view>
+      <input
+        class="form-input"
+        placeholder="请输入您的户号，如 A1-101"
+        value="{{form.householdNumber}}"
+        data-field="householdNumber"
+        bindinput="onInput"
+        maxlength="50"
+      />
+    </view>
+
+    <view class="form-group">
+      <view class="form-label">认养人姓名</view>
+      <input
+        class="form-input"
+        placeholder="您的姓名（选填）"
+        value="{{form.adopterName}}"
+        data-field="adopterName"
+        bindinput="onInput"
+        maxlength="50"
+      />
+    </view>
+
+    <view class="form-group">
+      <view class="form-label">联系电话</view>
+      <input
+        class="form-input"
+        type="number"
+        placeholder="手机号码（选填）"
+        value="{{form.phone}}"
+        data-field="phone"
+        bindinput="onInput"
+        maxlength="20"
+      />
+    </view>
+
+    <view class="form-group">
+      <view class="form-label">所在楼栋</view>
+      <input
+        class="form-input"
+        placeholder="如 A1（选填）"
+        value="{{form.building}}"
+        data-field="building"
+        bindinput="onInput"
+        maxlength="20"
+      />
+    </view>
+
+    <view class="form-group">
+      <view class="form-label">单元/房间号</view>
+      <input
+        class="form-input"
+        placeholder="如 101（选填）"
+        value="{{form.unitNumber}}"
+        data-field="unitNumber"
+        bindinput="onInput"
+        maxlength="20"
+      />
+    </view>
+  </view>
+
+  <!-- 认养须知 -->
+  <view class="card">
+    <view class="tips-title">📌 认养须知</view>
+    <view class="tips-list">
+      <view class="tips-item">• 认养后请善待猫咪，给予足够的食物和水</view>
+      <view class="tips-item">• 如猫咪生病请及时就医</view>
+      <view class="tips-item">• 建议为猫咪进行绝育手术</view>
+      <view class="tips-item">• 如无法继续认养，请联系小区物业管理人员</view>
+    </view>
+  </view>
+
+  <!-- 提交按钮 -->
+  <view class="form-submit">
+    <button
+      class="btn-primary adopt-submit-btn"
+      bindtap="onSubmit"
+      loading="{{submitting}}"
+      disabled="{{submitting}}"
+    >
+      确认认养
+    </button>
+  </view>
+</view>

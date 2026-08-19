@@ -1,0 +1,71 @@
+.cat-card {
+  background: #fff;
+  border-radius: 16rpx;
+  overflow: hidden;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.06);
+  transition: all 0.3s;
+}
+
+.cat-card:active {
+  transform: scale(0.98);
+  box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.12);
+}
+
+.cat-cover {
+  position: relative;
+  width: 100%;
+  height: 320rpx;
+  overflow: hidden;
+  background: linear-gradient(135deg, #f5f7ff, #e8ecff);
+}
+
+.cat-image {
+  width: 100%;
+  height: 100%;
+}
+
+.cat-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  font-size: 100rpx;
+}
+
+.cover-tags {
+  position: absolute;
+  top: 16rpx;
+  left: 16rpx;
+  display: flex;
+  gap: 8rpx;
+  flex-wrap: wrap;
+}
+
+.cat-body {
+  padding: 20rpx 24rpx;
+}
+
+.cat-name {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 8rpx;
+}
+
+.cat-meta {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  margin-bottom: 8rpx;
+}
+
+.cat-building {
+  font-size: 22rpx;
+  color: #999;
+}
+
+.cat-color {
+  font-size: 22rpx;
+  color: #999;
+}

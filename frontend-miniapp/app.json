@@ -1,0 +1,51 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/range/index",
+    "pages/notifications/index",
+    "pages/mine/index",
+    "pages/cat-detail/index",
+    "pages/adopt/index",
+    "pages/community/index"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#667eea",
+    "navigationBarTitleText": "喵之家",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#f5f5f5"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#667eea",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "猫咪",
+        "iconPath": "images/tab-cat.png",
+        "selectedIconPath": "images/tab-cat-active.png"
+      },
+      {
+        "pagePath": "pages/range/index",
+        "text": "范围",
+        "iconPath": "images/tab-range.png",
+        "selectedIconPath": "images/tab-range-active.png"
+      },
+      {
+        "pagePath": "pages/notifications/index",
+        "text": "通知",
+        "iconPath": "images/tab-notify.png",
+        "selectedIconPath": "images/tab-notify-active.png"
+      },
+      {
+        "pagePath": "pages/mine/index",
+        "text": "我的",
+        "iconPath": "images/tab-mine.png",
+        "selectedIconPath": "images/tab-mine-active.png"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json"
+}

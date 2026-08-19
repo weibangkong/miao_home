@@ -1,0 +1,81 @@
+<view class="page-container">
+  <!-- 小区切换 -->
+  <view class="community-bar" bindtap="onSwitchCommunity">
+    <view class="community-bar-left">
+      <text class="community-bar-icon">🏘️</text>
+      <text class="community-bar-label">当前小区</text>
+    </view>
+    <view class="community-bar-right">
+      <text class="community-bar-name">{{communityName}}</text>
+      <text class="community-bar-arrow">›</text>
+    </view>
+  </view>
+
+  <!-- 搜索栏 -->
+  <view class="search-bar">
+    <input
+      class="search-input"
+      placeholder="🔍 搜索猫咪名称"
+      value="{{searchText}}"
+      bindinput="onSearchInput"
+      confirm-type="search"
+    />
+  </view>
+
+  <!-- 楼栋快捷筛选 -->
+  <scroll-view scroll-x class="building-filter" wx:if="{{buildings.length > 0}}">
+    <view class="building-chips">
+      <view
+        class="chip {{buildingFilter === '' ? 'chip-active' : ''}}"
+        data-building=""
+        bindtap="onBuildingTap"
+      >全部</view>
+      <view
+        wx:for="{{buildings}}"
+        wx:key="*this"
+        class="chip {{buildingFilter === item ? 'chip-active' : ''}}"
+        data-building="{{item}}"
+        bindtap="onBuildingTap"
+      >{{item}}栋</view>
+    </view>
+  </scroll-view>
+
+  <!-- 猫咪列表 -->
+  <view wx:if="{{!loading && cats.length === 0}}" class="empty-state">
+    <view class="empty-icon">🐱</view>
+    <view class="empty-text">还没有认养猫咪哦，快来认养一只吧！！！</view>
+  </view>
+
+  <view wx:if="{{!loading && (filteredMyCats.length > 0 || filteredOtherCats.length > 0)}}">
+    <!-- 我的认养 -->
+    <view wx:if="{{filteredMyCats.length > 0}}" class="cat-section">
+      <view class="cat-section-header">
+        <text class="cat-section-title">💝 我的认养</text>
+        <text class="cat-section-count">{{filteredMyCats.length}}只</text>
+      </view>
+      <view class="cat-grid">
+        <view class="cat-grid-item" wx:for="{{filteredMyCats}}" wx:key="id">
+          <cat-card cat="{{item}}"></cat-card>
+        </view>
+      </view>
+    </view>
+
+    <!-- 其他猫咪 -->
+    <view wx:if="{{filteredOtherCats.length > 0}}" class="cat-divider-wrap">
+      <view class="cat-divider">
+        <view class="cat-divider-line"></view>
+        <text class="cat-divider-text">小区其他猫咪</text>
+        <view class="cat-divider-line"></view>
+      </view>
+      <view class="cat-grid">
+        <view class="cat-grid-item" wx:for="{{filteredOtherCats}}" wx:key="id">
+          <cat-card cat="{{item}}"></cat-card>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{loading}}" class="loading-center">
+    <view>加载中...</view>
+  </view>
+</view>

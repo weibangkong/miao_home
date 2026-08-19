@@ -1,0 +1,6 @@
+{
+  "component": true,
+  "usingComponents": {
+    "gender-badge": "../gender-badge/gender-badge"
+  }
+}

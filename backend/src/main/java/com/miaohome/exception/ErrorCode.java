@@ -1,0 +1,35 @@
+package com.miaohome.exception;
+
+public enum ErrorCode {
+
+    CAT_NOT_FOUND(1001),
+    MEDIA_NOT_FOUND(1002),
+    HEALTH_RECORD_NOT_FOUND(1003),
+    COMMENT_NOT_FOUND(1004),
+    USER_NOT_FOUND(1005),
+    FORBIDDEN(1006),
+    PHONE_ALREADY_EXISTS(1007),
+    INVALID_CREDENTIALS(1008),
+    UNAUTHORIZED(1009),
+    WECHAT_AUTH_FAILED(1010),
+    ALREADY_BOUND(1011),
+
+    ADOPTER_NOT_FOUND(2001),
+    ADOPTER_FOR_NOTIFICATION_NOT_FOUND(3001),
+    NOTIFICATION_NOT_FOUND(3002),
+
+    FILE_UPLOAD_ERROR(4001),
+    FILE_NOT_FOUND(4002),
+    UPLOAD_DIR_INIT_ERROR(4003),
+    STS_ISSUE_ERROR(4004),
+
+    BAD_REQUEST(5000),
+    NOT_FOUND(5004),
+    INTERNAL_ERROR(5000);
+
+    private final int code;
+
+    ErrorCode(int code) { this.code = code; }
+
+    public int getCode() { return code; }
+}

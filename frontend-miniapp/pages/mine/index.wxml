@@ -1,0 +1,78 @@
+<view class="page-container">
+  <!-- 头像区 -->
+  <view class="profile-header">
+    <view class="profile-avatar">
+      <text wx:if="{{!hasIdentity}}">😺</text>
+      <text wx:else>🧑‍💼</text>
+    </view>
+    <view class="profile-name" wx:if="{{hasIdentity && adopterInfo}}">
+      {{adopterInfo.adopterName || '爱猫人'}}
+    </view>
+    <view class="profile-name" wx:elif="{{hasIdentity}}">已绑定认养人</view>
+    <view class="profile-name" wx:else>未绑定</view>
+    <view class="profile-id" wx:if="{{hasIdentity}}">ID: {{adopterId}}</view>
+    <view class="profile-desc" wx:else>绑定认养人后可查看通知和认养记录</view>
+
+    <button
+      wx:if="{{!hasIdentity}}"
+      class="btn-primary profile-btn"
+      bindtap="onBindAdopter"
+    >绑定认养人</button>
+    <button
+      wx:else
+      class="btn-outline profile-btn"
+      bindtap="onClearIdentity"
+    >解除绑定</button>
+  </view>
+
+  <!-- 功能入口 -->
+  <view class="card">
+    <view class="menu-item" bindtap="goCommunity">
+      <view class="menu-left">
+        <text class="menu-icon">🏘️</text>
+        <text class="menu-label">当前小区</text>
+      </view>
+      <view class="menu-right">
+        <text style="color:#667eea;font-size:26rpx;font-weight:500;">{{communityName}}</text>
+        <text class="menu-arrow">›</text>
+      </view>
+    </view>
+
+    <view class="menu-item" bindtap="goNotifications">
+      <view class="menu-left">
+        <text class="menu-icon">🔔</text>
+        <text class="menu-label">通知中心</text>
+      </view>
+      <view class="menu-right">
+        <view wx:if="{{unreadCount > 0}}" class="unread-badge">{{unreadCount}}</view>
+        <text class="menu-arrow">›</text>
+      </view>
+    </view>
+
+    <view class="menu-item" bindtap="goRange">
+      <view class="menu-left">
+        <text class="menu-icon">📍</text>
+        <text class="menu-label">猫咪活动范围</text>
+      </view>
+      <view class="menu-right">
+        <text class="menu-arrow">›</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 关于 -->
+  <view class="card">
+    <view class="menu-item">
+      <view class="menu-left">
+        <text class="menu-icon">ℹ️</text>
+        <text class="menu-label">关于喵之家</text>
+      </view>
+      <view class="menu-right">
+        <text class="menu-arrow">›</text>
+      </view>
+    </view>
+    <view class="about-content">
+      <text>喵之家是一个流浪猫社区认养平台，帮助小区居民了解、关爱和认养身边的流浪猫。</text>
+    </view>
+  </view>
+</view>

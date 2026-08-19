@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>喵之家 · 极简冷调设计 — 样式指南</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: #F2F2F7;
+    color: #1D1D1F;
+    line-height: 1.6;
+    font-variant-numeric: tabular-nums;
+  }
+  .page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px;
+  }
+  h1 { font-size: 24px; font-weight: 600; letter-spacing: -0.3px; margin-bottom: 8px; }
+  h2 { font-size: 17px; font-weight: 500; margin: 48px 0 24px; padding-bottom: 12px; border-bottom: 1px solid #E5E5EA; }
+  h3 { font-size: 13px; font-weight: 500; color: #6E6E73; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; }
+  .subtitle { color: #6E6E73; font-size: 15px; margin-bottom: 40px; }
+
+  /* ---- Color Swatches ---- */
+  .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 16px; }
+  .swatch {
+    border-radius: 8px; overflow: hidden;
+    border: 1px solid #E5E5EA; background: #fff;
+  }
+  .swatch-color { height: 80px; }
+  .swatch-info { padding: 10px 12px; font-size: 12px; }
+  .swatch-info .name { font-weight: 600; color: #1D1D1F; }
+  .swatch-info .hex { color: #AEAEB2; margin-top: 2px; font-family: "SF Mono", monospace; }
+  .swatch-info .role { color: #6E6E73; margin-top: 2px; }
+
+  /* ---- Status Indicators ---- */
+  .status-row { display: flex; gap: 32px; flex-wrap: wrap; align-items: center; }
+  .status-item { display: flex; align-items: center; gap: 6px; font-size: 13px; color: #6E6E73; }
+  .dot-active { width: 7px; height: 7px; border-radius: 50%; background: #2C2C2C; flex-shrink: 0; }
+  .dot-inactive { width: 7px; height: 7px; border-radius: 50%; border: 1.5px solid #AEAEB2; flex-shrink: 0; }
+  .dot-danger { width: 7px; height: 7px; border-radius: 50%; background: #FF3B30; flex-shrink: 0; }
+
+  /* ---- Gender ---- */
+  .gender { font-size: 13px; color: #6E6E73; }
+
+  /* ---- Stat Numbers ---- */
+  .stat-group { display: flex; gap: 48px; flex-wrap: wrap; }
+  .stat-item { text-align: center; }
+  .stat-value { font-size: 40px; font-weight: 500; letter-spacing: -1px; color: #1D1D1F; line-height: 1.1; }
+  .stat-label { font-size: 13px; color: #AEAEB2; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
+
+  /* ---- Buttons ---- */
+  .btn-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+  .btn { padding: 8px 20px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: default;
+    font-family: inherit; line-height: 1.5; transition: background 0.15s; }
+  .btn-primary { background: #2C2C2C; color: #fff; border: none; }
+  .btn-secondary { background: transparent; color: #1D1D1F; border: 1px solid #D1D1D6; }
+  .btn-danger { background: transparent; color: #FF3B30; border: 1px solid #FF3B30; }
+
+  /* ---- Table ---- */
+  .table-wrap { border: 1px solid #E5E5EA; border-radius: 8px; overflow: hidden; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  thead th {
+    background: #F8F8F8; color: #6E6E73; font-weight: 500; font-size: 12px;
+    text-transform: uppercase; letter-spacing: 0.3px; padding: 10px 16px; text-align: left;
+    border-bottom: 1px solid #E5E5EA;
+  }
+  tbody td { padding: 12px 16px; border-bottom: 1px solid #F2F2F7; }
+  tbody tr:hover td { background: #FAFAFA; }
+
+  /* ---- Header mock ---- */
+  .header-mock {
+    display: flex; align-items: center; justify-content: space-between;
+    height: 56px; padding: 0 24px; background: #fff;
+    border-bottom: 1px solid #E5E5EA; margin: -40px -40px 32px;
+  }
+  .header-mock .logo { font-size: 18px; font-weight: 500; color: #1D1D1F; }
+  .header-mock .tenant { font-size: 13px; color: #6E6E73; }
+
+  /* ---- Sidebar mock ---- */
+  .layout-side { display: flex; gap: 0; }
+  .sidebar-mock {
+    width: 200px; background: #F8F8F8; padding: 16px 0;
+    border-right: 1px solid #E5E5EA; flex-shrink: 0;
+  }
+  .sidebar-mock .menu-item {
+    padding: 10px 16px; font-size: 14px; color: #6E6E73; display: flex;
+    align-items: center; gap: 10px; cursor: default; margin: 2px 8px;
+    border-radius: 6px; transition: background 0.15s;
+  }
+  .sidebar-mock .menu-item.active {
+    color: #1D1D1F; font-weight: 600; background: transparent;
+    border-left: 3px solid #2C2C2C; margin-left: 5px; padding-left: 13px;
+  }
+  .sidebar-mock .menu-item .icon { font-size: 16px; width: 20px; text-align: center; opacity: 0.6; }
+  .sidebar-mock .menu-item.active .icon { opacity: 1; }
+
+  /* ---- Content block ---- */
+  .block { margin-bottom: 32px; }
+  .block-title { font-size: 17px; font-weight: 500; color: #1D1D1F; margin-bottom: 16px; }
+
+  /* ---- List Item ---- */
+  .list-item {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 0; border-bottom: 1px solid #F2F2F7;
+  }
+  .list-item:last-child { border-bottom: none; }
+  .list-item .left { display: flex; align-items: center; gap: 12px; }
+  .list-item .label { font-weight: 500; font-size: 15px; }
+  .list-item .desc { font-size: 13px; color: #6E6E73; margin-top: 2px; }
+
+  /* ---- Avatar placeholder ---- */
+  .avatar-circle {
+    width: 40px; height: 40px; border-radius: 50%; background: #F2F2F7;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; color: #6E6E73; flex-shrink: 0;
+  }
+
+  /* ---- Input mock ---- */
+  .input-mock {
+    padding: 8px 12px; border: 1px solid #D1D1D6; border-radius: 8px;
+    font-size: 14px; color: #1D1D1F; font-family: inherit; width: 240px;
+    outline: none;
+  }
+  .input-mock:focus { border-color: #2C2C2C; }
+
+  /* ---- Empty state ---- */
+  .empty-state { padding: 64px 0; text-align: center; font-size: 14px; color: #AEAEB2; }
+
+  /* ---- Badge comparison ---- */
+  .comparison { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .comparison-col { padding: 24px; border-radius: 8px; border: 1px solid #E5E5EA; background: #fff; }
+  .comparison-col.old { background: #fafbff; }
+  .comparison-col h4 { font-size: 13px; color: #AEAEB2; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; }
+  .old-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 14px; border-radius: 20px; font-size: 12px; font-weight: 600;
+    background: linear-gradient(135deg, #d4fc79, #96e6a1); color: #1b5e20;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+  .old-badge .old-dot { width: 8px; height: 8px; border-radius: 50%; background: #1b5e20; }
+
+  /* ---- Form mock ---- */
+  .form-group { margin-bottom: 20px; }
+  .form-label { display: block; font-size: 13px; font-weight: 500; color: #1D1D1F; margin-bottom: 8px; }
+
+  /* ---- Notification item ---- */
+  .notif-item {
+    display: flex; align-items: flex-start; gap: 14px; padding: 16px 0;
+    border-bottom: 1px solid #F2F2F7;
+  }
+  .notif-icon {
+    width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+  }
+  .notif-icon.read { background: #F2F2F7; color: #AEAEB2; }
+  .notif-icon.unread { background: #2C2C2C; color: #fff; }
+  .notif-body { flex: 1; }
+  .notif-title { font-weight: 600; font-size: 15px; }
+  .notif-content { color: #6E6E73; font-size: 14px; margin-top: 4px; }
+  .notif-time { color: #AEAEB2; font-size: 12px; margin-top: 6px; }
+
+  @media (max-width: 768px) {
+    .page { padding: 24px; }
+    .header-mock { margin: -24px -24px 24px; padding: 0 16px; }
+    .comparison { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- ====== HEADER ====== -->
+  <div class="header-mock">
+    <div class="logo">喵之家</div>
+    <div class="tenant">当前小区：阳光花园 ▼</div>
+  </div>
+
+  <h1>喵之家 · 极简冷调设计</h1>
+  <p class="subtitle">Style Guide — 克制、理性、平静</p>
+
+  <!-- ====== 1. COLOR PALETTE ====== -->
+  <h2>一、色彩体系</h2>
+  <div class="swatches">
+    <div class="swatch"><div class="swatch-color" style="background:#F2F2F7"></div><div class="swatch-info"><div class="name">页面底色</div><div class="hex">#F2F2F7</div><div class="role">全局背景</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#FFFFFF; border-bottom:1px solid #E5E5EA"></div><div class="swatch-info"><div class="name">内容底色</div><div class="hex">#FFFFFF</div><div class="role">内容区域</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#F8F8F8"></div><div class="swatch-info"><div class="name">侧边栏</div><div class="hex">#F8F8F8</div><div class="role">侧边导航</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#1D1D1F"></div><div class="swatch-info"><div class="name">主文字</div><div class="hex">#1D1D1F</div><div class="role">标题/正文</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#6E6E73"></div><div class="swatch-info"><div class="name">辅助文字</div><div class="hex">#6E6E73</div><div class="role">标签/说明</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#AEAEB2"></div><div class="swatch-info"><div class="name">弱文字</div><div class="hex">#AEAEB2</div><div class="role">占位/时间戳</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#E5E5EA"></div><div class="swatch-info"><div class="name">分割线</div><div class="hex">#E5E5EA</div><div class="role">细线分隔</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#2C2C2C"></div><div class="swatch-info"><div class="name">强调色</div><div class="hex">#2C2C2C</div><div class="role">按钮/选中态</div></div></div>
+  </div>
+
+  <!-- ====== 2. LAYOUT ====== -->
+  <h2>二、整体布局（侧边栏 + 内容区）</h2>
+  <div class="layout-side" style="border:1px solid #E5E5EA; border-radius:8px; overflow:hidden;">
+    <div class="sidebar-mock">
+      <div class="menu-item"><span class="icon">📊</span> 数据概览</div>
+      <div class="menu-item active"><span class="icon">🐱</span> 猫咪管理</div>
+      <div class="menu-item"><span class="icon">🤝</span> 认养管理</div>
+      <div class="menu-item"><span class="icon">🔔</span> 通知管理</div>
+    </div>
+    <div style="flex:1; background:#fff; padding:32px;">
+      <div style="height:200px; display:flex; align-items:center; justify-content:center; color:#AEAEB2; font-size:14px;">
+        内容区域 — 无卡片包裹，32px 区块间距
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== 3. STATUS INDICATORS: Before/After ====== -->
+  <h2>三、状态指示器：改版对比</h2>
+  <div class="comparison">
+    <div class="comparison-col old">
+      <h4>改版前 · 彩色渐变气泡</h4>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <span class="old-badge"><span class="old-dot"></span>已认养</span>
+        <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 14px;border-radius:20px;font-size:12px;font-weight:600;background:linear-gradient(135deg,#ffe29f,#ffa99f);color:#8d3c00;box-shadow:0 2px 8px rgba(0,0,0,0.08);"><span style="width:8px;height:8px;border-radius:50%;background:#8d3c00;"></span>待认养</span>
+        <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 14px;border-radius:20px;font-size:12px;font-weight:600;background:linear-gradient(135deg,#a18cd1,#fbc2eb);color:#4a148c;box-shadow:0 2px 8px rgba(0,0,0,0.08);"><span style="width:8px;height:8px;border-radius:50%;background:#4a148c;"></span>已绝育</span>
+        <span style="display:inline-flex;align-items:center;padding:4px 14px;border-radius:20px;font-size:12px;font-weight:600;background:#f0f0f0;color:#595959;">未绝育</span>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <h4>改版后 · 纯文字 + 圆点</h4>
+      <div class="status-row">
+        <span class="status-item"><span class="dot-active"></span>已认养</span>
+        <span class="status-item"><span class="dot-inactive"></span>待认养</span>
+        <span class="status-item"><span class="dot-active"></span>已绝育</span>
+        <span class="status-item"><span class="dot-inactive"></span>未绝育</span>
+      </div>
+      <div style="margin-top:16px;">
+        <span class="status-item" style="margin-right:24px;"><span class="dot-danger"></span>3 条异常</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== 4. GENDER: Before/After ====== -->
+  <h2>四、性别标识：改版对比</h2>
+  <div class="comparison">
+    <div class="comparison-col old">
+      <h4>改版前 · 彩色圆形徽章</h4>
+      <span style="display:inline-flex;align-items:center;gap:5px;padding:4px 14px;border-radius:16px;background:linear-gradient(135deg,#1677ff,#4096ff);color:#fff;font-size:13px;font-weight:700;box-shadow:0 2px 8px rgba(0,0,0,0.15);"><span style="font-size:15px;">♂</span>公</span>
+      <span style="display:inline-flex;align-items:center;gap:5px;padding:4px 14px;border-radius:16px;background:linear-gradient(135deg,#eb2f96,#ff85c0);color:#fff;font-size:13px;font-weight:700;box-shadow:0 2px 8px rgba(0,0,0,0.15);margin-left:8px;"><span style="font-size:15px;">♀</span>母</span>
+    </div>
+    <div class="comparison-col">
+      <h4>改版后 · 纯文字 + 符号</h4>
+      <span class="gender">♂ 公</span>
+      <span class="gender" style="margin-left: 16px;">♀ 母</span>
+      <span class="gender" style="margin-left: 16px;">? 未知</span>
+    </div>
+  </div>
+
+  <!-- ====== 5. STAT NUMBERS ====== -->
+  <h2>五、统计数据</h2>
+  <div class="stat-group">
+    <div class="stat-item"><div class="stat-value">24</div><div class="stat-label">猫咪总数</div></div>
+    <div class="stat-item"><div class="stat-value">12</div><div class="stat-label">已认养</div></div>
+    <div class="stat-item"><div class="stat-value">12</div><div class="stat-label">待认养</div></div>
+    <div class="stat-item"><div class="stat-value">8</div><div class="stat-label">涉及楼栋</div></div>
+  </div>
+
+  <!-- ====== 6. BUTTONS ====== -->
+  <h2>六、按钮</h2>
+  <div class="btn-row">
+    <button class="btn btn-primary">主按钮</button>
+    <button class="btn btn-secondary">次按钮</button>
+    <button class="btn btn-danger">删除</button>
+  </div>
+
+  <!-- ====== 7. TABLE ====== -->
+  <h2>七、表格</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>猫咪名称</th><th>性别</th><th>楼栋</th><th>状态</th></tr></thead>
+      <tbody>
+        <tr>
+          <td style="font-weight:500;">小花</td>
+          <td><span class="gender">♀ 母</span></td>
+          <td>A1 栋</td>
+          <td><span class="status-item"><span class="dot-active"></span>已认养</span></td>
+        </tr>
+        <tr>
+          <td style="font-weight:500;">大橘</td>
+          <td><span class="gender">♂ 公</span></td>
+          <td>B2 栋</td>
+          <td><span class="status-item"><span class="dot-inactive"></span>待认养</span></td>
+        </tr>
+        <tr>
+          <td style="font-weight:500;">小黑</td>
+          <td><span class="gender">♂ 公</span></td>
+          <td>A1 栋</td>
+          <td><span class="status-item"><span class="dot-active"></span>已认养</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ====== 8. LIST ITEMS ====== -->
+  <h2>八、列表项（认养记录 / 楼栋分布）</h2>
+  <div style="border:1px solid #E5E5EA; border-radius:8px; padding:0 16px; background:#fff;">
+    <div class="list-item">
+      <div class="left">
+        <div class="avatar-circle">张</div>
+        <div>
+          <div class="label">张三</div>
+          <div class="desc">小花 · A1-101</div>
+        </div>
+      </div>
+      <div style="text-align:right;">
+        <span class="status-item"><span class="dot-active"></span>认养中</span>
+        <div style="color:#AEAEB2; font-size:12px; margin-top:4px;">2026-06-15</div>
+      </div>
+    </div>
+    <div class="list-item">
+      <div class="left">
+        <div class="avatar-circle">李</div>
+        <div>
+          <div class="label">李四</div>
+          <div class="desc">大橘 · B2-305</div>
+        </div>
+      </div>
+      <div style="text-align:right;">
+        <span class="status-item"><span class="dot-active"></span>认养中</span>
+        <div style="color:#AEAEB2; font-size:12px; margin-top:4px;">2026-05-20</div>
+      </div>
+    </div>
+    <div class="list-item">
+      <div class="left">
+        <div class="avatar-circle">王</div>
+        <div>
+          <div class="label">王五</div>
+          <div class="desc">小黑 · A1-202</div>
+        </div>
+      </div>
+      <div style="text-align:right;">
+        <span class="status-item"><span class="dot-inactive"></span>已取消</span>
+        <div style="color:#AEAEB2; font-size:12px; margin-top:4px;">2026-03-10</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== 9. NOTIFICATIONS ====== -->
+  <h2>九、通知列表</h2>
+  <div style="border:1px solid #E5E5EA; border-radius:8px; padding:0 16px; background:#fff;">
+    <div class="notif-item">
+      <div class="notif-icon unread">📬</div>
+      <div class="notif-body">
+        <div class="notif-title">猫咪疫苗提醒 <span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:500;color:#FF3B30;margin-left:8px;"><span style="width:6px;height:6px;border-radius:50%;background:#FF3B30;"></span>未读</span></div>
+        <div class="notif-content">小花需要在7月20日前完成年度疫苗接种，请尽快安排。</div>
+        <div class="notif-time">2026-07-08 14:30</div>
+      </div>
+    </div>
+    <div class="notif-item">
+      <div class="notif-icon read">📬</div>
+      <div class="notif-body">
+        <div class="notif-title" style="font-weight:500;">猫咪健康检查通知</div>
+        <div class="notif-content">大橘已完成健康检查，状态良好。</div>
+        <div class="notif-time">2026-07-01 09:15</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== 10. EMPTY STATE ====== -->
+  <h2>十、空状态</h2>
+  <div class="empty-state">暂无数据</div>
+
+  <!-- ====== 11. FORM ====== -->
+  <h2>十一、表单</h2>
+  <div style="max-width:480px; background:#fff; padding:24px; border:1px solid #E5E5EA; border-radius:8px;">
+    <div class="form-group">
+      <label class="form-label">猫咪名称</label>
+      <input class="input-mock" placeholder="如：小花" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">毛色</label>
+      <input class="input-mock" placeholder="如：橘色、黑白" />
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary">保存</button>
+    </div>
+  </div>
+
+  <!-- ====== 12. DASHBOARD PREVIEW ====== -->
+  <h2>十二、数据概览页效果预览</h2>
+  <div style="background:#fff; border:1px solid #E5E5EA; border-radius:8px; padding:32px;">
+    <div class="block">
+      <div class="block-title">概览</div>
+      <div class="stat-group">
+        <div class="stat-item"><div class="stat-value">24</div><div class="stat-label">猫咪总数</div></div>
+        <div class="stat-item"><div class="stat-value">12</div><div class="stat-label">已认养</div></div>
+        <div class="stat-item"><div class="stat-value">12</div><div class="stat-label">待认养</div></div>
+        <div class="stat-item"><div class="stat-value">8</div><div class="stat-label">涉及楼栋</div></div>
+      </div>
+    </div>
+    <hr style="border:none; border-top:1px solid #F2F2F7; margin: 0 0 32px;">
+    <div class="block">
+      <div class="block-title">最近更新的猫咪</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>猫咪名称</th><th>性别</th><th>楼栋</th><th>状态</th></tr></thead>
+          <tbody>
+            <tr><td style="font-weight:500;">小花</td><td>♀ 母</td><td>A1 栋</td><td><span class="status-item"><span class="dot-active"></span>已认养</span></td></tr>
+            <tr><td style="font-weight:500;">大橘</td><td>♂ 公</td><td>B2 栋</td><td><span class="status-item"><span class="dot-inactive"></span>待认养</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <p style="text-align:center; color:#AEAEB2; font-size:12px; margin-top:64px; padding-bottom:32px;">
+    喵之家 · 极简冷调设计指南 — 2026-07-10
+  </p>
+
+</div>
+
+</body>
+</html>

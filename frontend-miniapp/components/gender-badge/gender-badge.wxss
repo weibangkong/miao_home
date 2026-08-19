@@ -1,0 +1,24 @@
+.gender-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rpx 16rpx;
+  border-radius: 24rpx;
+  font-size: 24rpx;
+  font-weight: 700;
+  color: #fff;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.12);
+  white-space: nowrap;
+}
+
+.gender-male {
+  background: linear-gradient(135deg, #1677ff, #4096ff);
+}
+
+.gender-female {
+  background: linear-gradient(135deg, #eb2f96, #ff85c0);
+}
+
+.gender-unknown {
+  background: #bfbfbf;
+}

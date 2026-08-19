@@ -1,0 +1,43 @@
+<view class="page-container">
+  <!-- 头部 -->
+  <view class="community-header">
+    <view class="community-header-icon">🏘️</view>
+    <view class="community-header-title">选择您所在的小区</view>
+    <view class="community-header-desc">切换小区后将展示该小区的猫咪信息</view>
+  </view>
+
+  <!-- 列表 -->
+  <view wx:if="{{!loading && communities.length === 0}}" class="empty-state">
+    <view class="empty-text">暂无可用小区</view>
+  </view>
+
+  <view wx:elif="{{!loading}}" class="community-list">
+    <view
+      wx:for="{{communities}}"
+      wx:key="id"
+      class="community-item {{currentTenantId === item.id ? 'community-active' : ''}}"
+      data-id="{{item.id}}"
+      data-name="{{item.name}}"
+      bindtap="onSelect"
+    >
+      <view class="community-left">
+        <view class="community-avatar">
+          <text>🏠</text>
+        </view>
+        <view class="community-info">
+          <view class="community-name">{{item.name}}</view>
+          <view class="community-code" wx:if="{{item.code}}">编码：{{item.code}}</view>
+          <view class="community-buildings" wx:if="{{item.building}}">楼栋：{{item.building}}</view>
+        </view>
+      </view>
+      <view class="community-right">
+        <view wx:if="{{currentTenantId === item.id}}" class="community-check">✓</view>
+        <text wx:else class="community-arrow">›</text>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{loading}}" class="loading-center">
+    <view>加载中...</view>
+  </view>
+</view>
