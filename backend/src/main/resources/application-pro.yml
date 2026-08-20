@@ -22,7 +22,7 @@ storage:
     access-key-id: ${STORAGE_ALIYUN_ACCESS_KEY_ID:}
     access-key-secret: ${STORAGE_ALIYUN_ACCESS_KEY_SECRET:}
     role-arn: ${STORAGE_ALIYUN_ROLE_ARN:}
-    role-session-name: ${STORAGE_ALIYUN_ROLE_SESSION_NAME:miaohome}
+    role-session-name: ${ALIYUN_OSS_ROLE_SESSION_NAME:miaohome}
 
 # 生产环境关闭 Swagger 接口文档
 springdoc:
