@@ -1,4 +1,4 @@
-﻿const config = require('./config');
+const config = require('./config');
 
 function request(path, options = {}) {
   const { method = 'GET', data, params } = options;
@@ -72,7 +72,6 @@ function getCatDetail(id) { return request(`/cats/${id}`); }
 
 // ====== User ======
 function createUser(data) { return request('/users', { method: 'POST', data }); }
-function getUser(userId) { return request(`/users/${userId}`); }
 
 // ====== Cat Likes ======
 function toggleCatLike(catId, userId) { return request(`/cats/${catId}/like`, { method: 'POST', data: { userId } }); }
@@ -110,7 +109,7 @@ function getFileUrl(url) {
 
 module.exports = {
   request, uploadFile, getCats, getCatDetail,
-  createUser, getUser,
+  createUser,
   toggleCatLike, getCatLikeStatus,
   getComments, createComment, deleteComment, toggleCommentLike,
   adoptCat, getAdoptersByCat, getAllAdopters, cancelAdoption,

@@ -1,4 +1,4 @@
-﻿<view class="page-container" wx:if="{{cat}}">
+<view class="page-container" wx:if="{{cat}}">
   <!-- 头像区 -->
   <view class="detail-avatar-wrap">
     <image wx:if="{{cat.avatarFullUrl}}" src="{{cat.avatarFullUrl}}" mode="aspectFill" class="detail-avatar" />
@@ -114,7 +114,7 @@
         maxlength="500"
         class="comment-textarea"
       />
-      <button class="btn-primary comment-submit-btn" bindtap="onSubmitComment" disabled="{{!commentInput.trim()}}">
+      <button class="btn-primary comment-submit-btn" bindtap="onSubmitComment" disabled="{{!canSubmit}}">
         {{replyTarget ? '回复' : '发表'}}
       </button>
     </view>
@@ -132,9 +132,10 @@
     <!-- 评论列表 -->
     <view wx:if="{{commentLoading}}" class="loading-small">加载中...</view>
     <view wx:elif="{{comments.length === 0}}" class="empty-small">暂无评论，来抢沙发吧~</view>
-    <block wx:else wx:for="{{comments}}" wx:key="id">
+    <block wx:else>
+      <block wx:for="{{comments}}" wx:key="id">
       <view class="comment-item">
-        <view class="comment-avatar">{{item.nickname && item.nickname.charAt(0) || '?'}}</view>
+        <view class="comment-avatar">{{item.avatarChar || '?'}}</view>
         <view class="comment-body">
           <view class="comment-header">
             <text class="comment-nickname">{{item.nickname || '未知用户'}}</text>
@@ -156,7 +157,7 @@
           <view wx:if="{{item.replies && item.replies.length > 0}}" class="replies-wrap">
             <block wx:for="{{item.replies}}" wx:key="id" wx:for-item="reply">
               <view class="reply-item">
-                <view class="comment-avatar sm">{{reply.nickname && reply.nickname.charAt(0) || '?'}}</view>
+                <view class="comment-avatar sm">{{reply.avatarChar || '?'}}</view>
                 <view class="comment-body">
                   <view class="comment-header">
                     <text class="comment-nickname">{{reply.nickname || '未知用户'}}</text>
@@ -177,6 +178,7 @@
           </view>
         </view>
       </view>
+      </block>
     </block>
   </view>
 

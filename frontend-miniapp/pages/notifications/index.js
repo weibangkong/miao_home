@@ -56,7 +56,7 @@ Page({
       await api.markNotificationRead(id);
       // 更新本地数据
       const notifications = this.data.notifications.map(n =>
-        n.id === id ? { ...n, isRead: true } : n
+        String(n.id) === String(id) ? { ...n, isRead: true } : n
       );
       this.setData({
         notifications,

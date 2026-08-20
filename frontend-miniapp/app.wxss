@@ -287,6 +287,7 @@ page {
 .gap-16 { gap: 16rpx; }
 .gap-24 { gap: 24rpx; }
 
+.mt-8 { margin-top: 8rpx; }
 .mt-12 { margin-top: 12rpx; }
 .mt-16 { margin-top: 16rpx; }
 .mt-24 { margin-top: 24rpx; }

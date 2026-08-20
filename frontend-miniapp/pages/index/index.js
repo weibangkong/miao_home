@@ -29,7 +29,6 @@ Page({
 
   onLoad() {
     this.refreshCommunity();
-    this.loadData();
   },
 
   onShow() {

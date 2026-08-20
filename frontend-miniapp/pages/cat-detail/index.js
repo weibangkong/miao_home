@@ -1,4 +1,4 @@
-﻿const api = require('../../utils/api');
+const api = require('../../utils/api');
 
 Page({
   data: {
@@ -18,6 +18,7 @@ Page({
     comments: [],
     commentSort: 'created_at_desc',
     commentInput: '',
+    canSubmit: false,
     replyTarget: null,
     commentLoading: false,
   },
@@ -108,10 +109,22 @@ Page({
   async loadComments() {
     this.setData({ commentLoading: true });
     try {
-      const [sb, od] = this.data.commentSort.split('_');
+      const m = this.data.commentSort.match(/^(.+)_(asc|desc)$/);
+      const sortBy = m ? m[1] : 'created_at';
+      const order = m ? m[2] : 'desc';
       const uid = this.data.currentUserId;
-      const res = await api.getComments(this.catId, sb, od, uid || undefined);
-      if (res.code === 200) this.setData({ comments: res.data || [] });
+      const res = await api.getComments(this.catId, sortBy, order, uid || undefined);
+      if (res.code === 200) {
+        const comments = (res.data || []).map(c => ({
+          ...c,
+          avatarChar: c.nickname ? c.nickname.charAt(0) : '',
+          replies: (c.replies || []).map(r => ({
+            ...r,
+            avatarChar: r.nickname ? r.nickname.charAt(0) : '',
+          })),
+        }));
+        this.setData({ comments });
+      }
     } finally {
       this.setData({ commentLoading: false });
     }
@@ -131,29 +144,33 @@ Page({
   onCommentSort(e) { this.setData({ commentSort: e.currentTarget.dataset.sort }); this.loadComments(); },
 
   /** 输入评论 */
-  onCommentInput(e) { this.setData({ commentInput: e.detail.value }); },
+  onCommentInput(e) {
+    const value = e.detail.value;
+    this.setData({ commentInput: value, canSubmit: value.trim().length > 0 });
+  },
 
   /** 提交评论 */
   async onSubmitComment() {
     const content = this.data.commentInput.trim();
     const uid = this.data.currentUserId;
     if (!content || !uid) return;
+    const isReply = Boolean(this.data.replyTarget);
     const data = { userId: uid, content };
     if (this.data.replyTarget) data.parentId = this.data.replyTarget.id;
     const res = await api.createComment(this.catId, data);
     if (res.code === 200) {
-      this.setData({ commentInput: '', replyTarget: null });
+      this.setData({ commentInput: '', canSubmit: false, replyTarget: null });
       this.loadComments();
-      wx.showToast({ title: this.data.replyTarget ? '回复成功' : '评论成功', icon: 'success' });
+      wx.showToast({ title: isReply ? '回复成功' : '评论成功', icon: 'success' });
     }
   },
 
   /** 回复 */
   onReply(e) {
     const { id, nickname } = e.currentTarget.dataset;
-    this.setData({ replyTarget: { id, nickname }, commentInput: '' });
+    this.setData({ replyTarget: { id, nickname }, commentInput: '', canSubmit: false });
   },
-  onCancelReply() { this.setData({ replyTarget: null, commentInput: '' }); },
+  onCancelReply() { this.setData({ replyTarget: null, commentInput: '', canSubmit: false }); },
 
   /** 评论点赞 */
   async onCommentLike(e) {
