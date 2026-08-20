@@ -1,8 +1,8 @@
 spring:
   datasource:
     url: jdbc:postgresql://www.hellmiao.com:5432/miao_home
-    username: miao_home
-    password: miao_home_2024_DML
+    username: ${DB_USERNAME:}
+    password: ${DB_PASSWORD:}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -15,6 +15,14 @@ spring:
 
 storage:
   type: aliyun
+  aliyun:
+    endpoint: ${STORAGE_ALIYUN_ENDPOINT:}
+    region: ${STORAGE_ALIYUN_REGION:}
+    bucket: ${STORAGE_ALIYUN_BUCKET:}
+    access-key-id: ${STORAGE_ALIYUN_ACCESS_KEY_ID:}
+    access-key-secret: ${STORAGE_ALIYUN_ACCESS_KEY_SECRET:}
+    role-arn: ${STORAGE_ALIYUN_ROLE_ARN:}
+    role-session-name: ${STORAGE_ALIYUN_ROLE_SESSION_NAME:miaohome}
 
 # 生产环境关闭 Swagger 接口文档
 springdoc:

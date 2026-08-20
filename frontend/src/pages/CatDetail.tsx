@@ -106,7 +106,12 @@ export default function CatDetail() {
     if (!cat) return;
     const file = values.file?.fileList?.[0]?.originFileObj;
     if (!file) { message.error("请选择文件"); return; }
-    await uploadCatMedia(cat.id, file, values.ageStage || undefined, values.isAvatar || false);
+    try {
+      await uploadCatMedia(cat.id, file, values.ageStage || undefined, values.isAvatar || false);
+    } catch (e) {
+      message.error(e instanceof Error ? e.message : "上传失败");
+      return;
+    }
     message.success("上传成功");
     setUploadModalOpen(false);
     uploadForm.resetFields();

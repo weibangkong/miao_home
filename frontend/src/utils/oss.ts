@@ -70,6 +70,19 @@ async function ensureClient(): Promise<OSS> {
   return client;
 }
 
+/** 单文件上传大小上限（字节），50MB */
+export const MAX_UPLOAD_BYTES = 50 * 1024 * 1024;
+
+/**
+ * 校验上传文件大小，超过上限抛出错误
+ * @param file 待上传文件
+ */
+export function assertUploadSize(file: File): void {
+  if (file.size > MAX_UPLOAD_BYTES) {
+    throw new Error(`文件大小不能超过 ${MAX_UPLOAD_BYTES / 1024 / 1024}MB`);
+  }
+}
+
 /**
  * 直传文件到 OSS
  * @param file 待上传文件

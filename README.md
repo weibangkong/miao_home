@@ -168,10 +168,40 @@ npm run dev
 
 ### 后端环境
 
-| 配置文件 | 数据库用户 | DDL 策略 | SQL 日志 | 适用场景 |
+| 配置文件 | 数据库账号（`DB_USERNAME`） | DDL 策略 | SQL 日志 | 适用场景 |
 |---|---|---|---|---|
 | `application-dev.yml` | `miao_home_dev` | `update`（自动建表） | 开启 | 本地开发 |
 | `application-pro.yml` | `miao_home` | `validate`（仅校验） | 关闭 | 生产部署 |
+
+### 环境变量（密钥注入）
+
+数据库密码、阿里云 AccessKey 等敏感信息**不写入配置文件**，全部通过环境变量注入。配置文件里的 `${VAR:}` 占位符未注入时为**空值**，应用会启动失败或相关功能不可用。
+
+| 环境变量 | 说明 | 示例 |
+|---|---|---|
+| `DB_USERNAME` | 数据库账号（dev=`miao_home_dev`，pro=`miao_home`） | `miao_home_dev` |
+| `DB_PASSWORD` | 数据库密码 | — |
+| `STORAGE_ALIYUN_ENDPOINT` | OSS 服务端点 | `https://oss-cn-hangzhou.aliyuncs.com` |
+| `STORAGE_ALIYUN_REGION` | OSS 地域 | `oss-cn-hangzhou` |
+| `STORAGE_ALIYUN_BUCKET` | 存储桶名称 | — |
+| `STORAGE_ALIYUN_ACCESS_KEY_ID` | RAM 子账号 AccessKey ID | — |
+| `STORAGE_ALIYUN_ACCESS_KEY_SECRET` | RAM 子账号 AccessKey Secret | — |
+| `STORAGE_ALIYUN_ROLE_ARN` | STS 角色 ARN | `acs:ram::<uid>:role/<role>` |
+| `STORAGE_ALIYUN_ROLE_SESSION_NAME` | STS 会话名（可选，默认 `miaohome`） | `miaohome` |
+
+#### 本地开发（IDEA）
+
+在 Run/Debug Configuration → `Environment variables` 中填入上述变量即可，无需改动配置文件、无需创建本地配置文件。
+
+#### 生产部署
+
+按部署方式注入：
+
+- **Docker**：`docker run -e DB_PASSWORD=xxx -e STORAGE_ALIYUN_ACCESS_KEY_ID=xxx ...`
+- **systemd / 直接启动**：在服务单元或启动脚本里 `export`，或写入 `/etc/environment`（注意文件权限 `600`）
+- **Kubernetes**：用 Secret 挂载为容器环境变量
+
+> 安全提示：环境变量值不要打印进日志；AccessKey 使用 RAM 子账号并授最小权限，禁用主账号；密钥一旦泄露，需在阿里云控制台**禁用并重建**，仅改环境变量无效。
 
 ### 前端代理
 

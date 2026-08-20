@@ -24,12 +24,9 @@ app:
 storage:
   type: ${STORAGE_TYPE:local}
   aliyun:
-    endpoint: ${ALIYUN_OSS_ENDPOINT:}
-    region: ${ALIYUN_OSS_REGION:}
-    bucket: ${ALIYUN_OSS_BUCKET:}
-    access-key-id: ${ALIYUN_ACCESS_KEY_ID:}
-    access-key-secret: ${ALIYUN_ACCESS_KEY_SECRET:}
-    role-arn: ${ALIYUN_OSS_ROLE_ARN:}
+    access-key-id: ${STORAGE_ALIYUN_ACCESS_KEY_ID:}
+    access-key-secret: ${STORAGE_ALIYUN_ACCESS_KEY_SECRET:}
+    role-arn: ${STORAGE_ALIYUN_ROLE_ARN:}
     role-session-name: ${ALIYUN_OSS_ROLE_SESSION_NAME:miaohome}
     url-expiration-seconds: ${ALIYUN_OSS_URL_EXPIRATION:3600}
     public-base-url: ${ALIYUN_OSS_PUBLIC_BASE_URL:}

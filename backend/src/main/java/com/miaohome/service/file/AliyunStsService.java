@@ -26,14 +26,18 @@ import java.util.Map;
 @Service
 public class AliyunStsService {
 
-    /** STS 服务地域（全球统一为 cn-hangzhou） */
-    private static final String STS_REGION = "cn-hangzhou";
+    /** STS 服务地域（青岛） */
+    private static final String STS_REGION = "cn-qingdao";
+
+    /** STS 服务端点 */
+    private static final String STS_ENDPOINT = "sts.cn-qingdao.aliyuncs.com";
 
     /** 临时凭证有效期（秒） */
     private static final long DURATION_SECONDS = 3600L;
 
-    /** 单文件上传大小上限（字节），50MB，与 multipart 配置保持一致 */
-    private static final long MAX_UPLOAD_BYTES = 50L * 1024 * 1024;
+    static {
+        DefaultProfile.addEndpoint(STS_REGION, "Sts", STS_ENDPOINT);
+    }
 
     private final StorageConfig.AliyunOssProperties props;
     private final ObjectMapper objectMapper;
@@ -50,7 +54,6 @@ public class AliyunStsService {
     public StsCredentialsResponse issueCredentials() {
         String dateStr = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
         String dir = FileStorageService.PUBLIC_PREFIX + dateStr + "/";
-
         DefaultProfile profile = DefaultProfile.getProfile(
                 STS_REGION, props.getAccessKeyId(), props.getAccessKeySecret());
         IAcsClient client = new DefaultAcsClient(profile);
@@ -83,18 +86,14 @@ public class AliyunStsService {
     }
 
     /**
-     * 构建限制权限策略：仅允许向指定桶的指定目录前缀上传对象，并限制单文件大小
+     * 构建限制权限策略：仅允许向指定桶的指定目录前缀上传对象
      */
     private String buildPutPolicy(String dir) {
         try {
-            Map<String, Object> condition = Map.of(
-                    "NumericLessThanEquals", Map.of("oss:ContentLength", MAX_UPLOAD_BYTES)
-            );
             Map<String, Object> statement = Map.of(
                     "Effect", "Allow",
                     "Action", List.of("oss:PutObject"),
-                    "Resource", List.of("acs:oss:*:*:" + props.getBucket() + "/" + dir + "*"),
-                    "Condition", condition
+                    "Resource", List.of("acs:oss:*:*:" + props.getBucket() + "/" + dir + "*")
             );
             Map<String, Object> policy = Map.of(
                     "Version", "1",

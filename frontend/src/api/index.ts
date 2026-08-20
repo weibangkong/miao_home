@@ -1,6 +1,7 @@
 ﻿import axios from "axios";
 import type { ApiResult, Cat, CatMedia, Adopter, Notification, CatHealthRecord, CatComment, User } from "../types";
-import { uploadToOss } from "../utils/oss";
+import { uploadToOss, assertUploadSize } from "../utils/oss";
+import { compressImage } from "../utils/imageCompress";
 
 const http = axios.create({
   baseURL: "/miaohome/api",
@@ -20,8 +21,10 @@ export const getMe = () =>
 export const updateMyAvatar = (objectKey: string) =>
   http.put<ApiResult<User>>("/users/me/avatar", { objectKey }).then((r) => r.data);
 
-export const uploadUserAvatar = async (file: File) => {
-  const objectKey = await uploadToOss(file);
+export const uploadUserAvatar = async (file: File, maxDimension?: number) => {
+  assertUploadSize(file);
+  const compressed = await compressImage(file, maxDimension ? { maxDimension } : undefined);
+  const objectKey = await uploadToOss(compressed);
   return updateMyAvatar(objectKey);
 };
 
@@ -77,13 +80,21 @@ export const confirmCatMediaObject = (
 ) =>
   http.post<ApiResult<CatMedia>>(`/cats/${catId}/media/confirm`, data).then((r) => r.data);
 
-export const uploadCatMedia = async (catId: number, file: File, ageStage?: string, isAvatar?: boolean) => {
-  const objectKey = await uploadToOss(file);
+export const uploadCatMedia = async (
+  catId: number,
+  file: File,
+  ageStage?: string,
+  isAvatar?: boolean,
+  maxDimension?: number
+) => {
+  assertUploadSize(file);
+  const compressed = await compressImage(file, maxDimension ? { maxDimension } : undefined);
+  const objectKey = await uploadToOss(compressed);
   return confirmCatMediaObject(catId, {
     objectKey,
-    fileName: file.name,
-    fileSize: file.size,
-    mediaType: file.type.startsWith("video") ? "VIDEO" : "PHOTO",
+    fileName: compressed.name,
+    fileSize: compressed.size,
+    mediaType: compressed.type.startsWith("video") ? "VIDEO" : "PHOTO",
     ageStage,
     isAvatar: isAvatar ?? false,
   });

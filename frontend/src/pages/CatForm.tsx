@@ -57,8 +57,8 @@ export default function CatForm() {
         message.success("创建成功");
       }
       navigate("/cats");
-    } catch {
-      message.error("操作失败");
+    } catch (e) {
+      message.error(e instanceof Error ? e.message : "操作失败");
     } finally {
       setSubmitting(false);
     }

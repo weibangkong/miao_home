@@ -1,8 +1,8 @@
 spring:
   datasource:
     url: jdbc:postgresql://www.hellmiao.com:5432/miao_home
-    username: miao_home_dev
-    password: miao_home_dev_2024_DDL
+    username: ${DB_USERNAME:}
+    password: ${DB_PASSWORD:}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -15,3 +15,7 @@ spring:
 
 storage:
   type: aliyun
+  aliyun:
+    endpoint: oss-cn-qingdao.aliyuncs.com
+    region: oss-cn-qingdao
+    bucket: miao-home
